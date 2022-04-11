@@ -23,7 +23,7 @@ const prodEnv = {
   cli: {
     migrationsDir: "./src/migrations",
   },
-  synchronize: false,
+  synchronize: true,
   ssl:
     process.env.NODE_ENV === "production"
       ? { rejectUnauthorized: false }
