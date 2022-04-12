@@ -14,6 +14,6 @@ userRoutes.get(
   isDoctorMiddleware,
   DoctorController.listPatientsByDoctor
 );
-userRoutes.get("/user/:id", authenticationMiddleware, UserController.listUser);
+userRoutes.get("/user", authenticationMiddleware, UserController.listUser);
 
 export default userRoutes;
