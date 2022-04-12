@@ -20,7 +20,9 @@ export const authenticationMiddleware = (
 
   token = token.split(" ")[1];
 
-  const { userId } = verify(token, process.env.JWT_SECRET) as token;
+  let superSecret = process.env.JWT_SECRET || "supersecret";
+
+  const { userId } = verify(token, superSecret) as token;
 
   req.userId = userId;
 
