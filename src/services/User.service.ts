@@ -75,7 +75,9 @@ export const createJWT = async ({ email, password }: ICreateJWT) => {
     throw new Error("Wrong email or password!");
   }
 
-  const jwt = sign({ userId: user.id }, process.env.JWT_SECRET, {
+  let superSecret = process.env.JWT_SECRET || "supersecret"
+
+  const jwt = sign({ userId: user.id }, superSecret, {
     expiresIn: "24h",
   });
 
