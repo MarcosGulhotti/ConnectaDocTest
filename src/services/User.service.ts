@@ -66,13 +66,13 @@ export const createJWT = async ({ email, password }: ICreateJWT) => {
   });
 
   if (!user) {
-    throw new ErrorHTTP("Wrong email or password!", 401);
+    throw new Error("Wrong email or password!");
   }
 
   const isPasswordCorrect = await compare(password, user.password);
 
   if (!isPasswordCorrect) {
-    throw new ErrorHTTP("Wrong email or password!", 401);
+    throw new Error("Wrong email or password!");
   }
 
   const jwt = sign({ userId: user.id }, process.env.JWT_SECRET, {
