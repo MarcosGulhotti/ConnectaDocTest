@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createUser, createJWT } from "../services/User.service";
+import { createUser, createJWT, listUserById } from "../services/User.service";
 
 class UserController {
   async createUser(req: Request, res: Response) {
@@ -43,6 +43,16 @@ class UserController {
       const token = await createJWT({ email, password });
 
       return res.status(200).json({ token });
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+  }
+
+  async listUser(req: Request, res: Response) {
+    try {
+      const user = await listUserById(req.userId);
+
+      return res.status(200).json(user);
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }
