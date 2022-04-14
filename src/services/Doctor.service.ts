@@ -89,24 +89,12 @@ interface cancelSchedule {
   date: string;
 }
 
-export const cancelSchedule = async ({ id, date }: cancelSchedule) => {
-  const userRepository = getCustomRepository(UserRepository);
+export const cancelSchedule = async ({ id }: cancelSchedule) => {
   const scheduleRepository = getCustomRepository(SchedulesRepository);
-
-  const user = await userRepository.findOne(id);
-
-  const newDate = new Date(date);
-
-  const schedule = await scheduleRepository.findOne({
-    where: {
-      user: user.id,
-      schedule: newDate,
-    },
-  });
 
   await scheduleRepository.update(
     {
-      id: schedule.id,
+      id: id,
     },
     {
       status: "Cancelado",
@@ -115,7 +103,7 @@ export const cancelSchedule = async ({ id, date }: cancelSchedule) => {
 
   const output = await scheduleRepository.findOne({
     where: {
-      user: user.id,
+      id: id,
     },
   });
 
