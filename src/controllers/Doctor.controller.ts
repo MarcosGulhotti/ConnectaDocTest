@@ -1,9 +1,5 @@
 import { Request, Response } from "express";
-import {
-  createScheduleWithExistingPatient,
-  createScheduleWithoutExistingPatient,
-  listPatientsByDoctor,
-} from "../services/Doctor.service";
+import { cancelSchedule, createScheduleWithExistingPatient, createScheduleWithoutExistingPatient, listPatientsByDoctor } from "../services/Doctor.service";
 
 class DoctorController {
   async listPatientsByDoctor(req: Request, res: Response) {
@@ -36,14 +32,12 @@ class DoctorController {
   }
 
   async createScheduleAndUser(req: Request, res: Response) {
-    const { userId } = req.params;
     const doctorId = req.userId;
     const { name, email, password, age, gender, isDoc, date } = req.body;
 
     if (!name || !email || !password || !age || !gender || !date) {
       return res.status(400).json({
-        error:
-          "Following fields are required: name, email, password, age, gender, date & isDoc",
+        error: "Following fields are required: name, email, password, age, gender, date & isDoc",
       });
     }
 
@@ -56,6 +50,19 @@ class DoctorController {
         schedule: date,
       });
       return res.status(201).json(schedule);
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+  }
+
+  async cancelSchedule(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+
+      const newSchedule = await cancelSchedule(userId);
+
+
+      return res.status(200).json(newSchedule);
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }

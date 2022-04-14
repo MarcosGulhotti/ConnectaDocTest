@@ -41,11 +41,7 @@ export const listPatientsByDoctor = async (id: string) => {
   return patients;
 };
 
-export const createScheduleWithExistingPatient = async ({
-  userId,
-  doctorId,
-  schedule,
-}: ScheduleInterface) => {
+export const createScheduleWithExistingPatient = async ({ userId, doctorId, schedule }: ScheduleInterface) => {
   const userRepository = getCustomRepository(UserRepository);
   const scheduleRepository = getCustomRepository(SchedulesRepository);
 
@@ -53,8 +49,6 @@ export const createScheduleWithExistingPatient = async ({
   const patient = await userRepository.findOne(userId);
 
   const date = new Date(schedule);
-
-  console.log(date)
 
   if (!patient) {
     throw new Error("User not exists!");
@@ -78,11 +72,7 @@ interface ScheduleWithoutExistingPacient {
   schedule: Date;
 }
 
-export const createScheduleWithoutExistingPatient = async ({
-  user,
-  doctorId,
-  schedule,
-}: ScheduleWithoutExistingPacient) => {
+export const createScheduleWithoutExistingPatient = async ({ user, doctorId, schedule }: ScheduleWithoutExistingPacient) => {
   const newUser = await createUser(user);
 
   const newSchedule = await createScheduleWithExistingPatient({
@@ -92,4 +82,34 @@ export const createScheduleWithoutExistingPatient = async ({
   });
 
   return newSchedule;
+};
+
+export const cancelSchedule = async (id: string) => {
+  const userRepository = getCustomRepository(UserRepository);
+  const scheduleRepository = getCustomRepository(SchedulesRepository);
+
+  const user = await userRepository.findOne(id);
+
+  const schedule = await scheduleRepository.findOne({
+    where: {
+      user: user.id,
+    },
+  });
+
+  await scheduleRepository.update(
+    {
+      id: schedule.id,
+    },
+    {
+      status: "Cancelado",
+    }
+  );
+
+  const output = await scheduleRepository.findOne({
+    where: {
+      user: user.id,
+    },
+  });
+
+  return output.serialize();
 };
