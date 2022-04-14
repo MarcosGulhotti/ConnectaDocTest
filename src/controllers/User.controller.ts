@@ -49,9 +49,9 @@ class UserController {
   }
 
   async listUser(req: Request, res: Response) {
-    const { email } = req.body
+    const { user_email } = req.params
     try {
-      const user = await ListUserByEmail(email);
+      const user = await ListUserByEmail(user_email);
 
       return res.status(200).json(user);
     } catch (error) {
