@@ -12,7 +12,7 @@ export const isDoctorMiddleware = async (
   const user = await userRepository.findOne(req.userId);
 
   if (!user.isDoc) {
-    throw new Error("User is not a Doctor");
+    throw new Error("User is not a Doctor.");
   }
 
   next();
