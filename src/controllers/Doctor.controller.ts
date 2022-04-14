@@ -58,9 +58,12 @@ class DoctorController {
   async cancelSchedule(req: Request, res: Response) {
     try {
       const { userId } = req.params;
+      const { date } = req.body;
 
-      const newSchedule = await cancelSchedule(userId);
-
+      const newSchedule = await cancelSchedule({
+        id: userId,
+        date,
+      });
 
       return res.status(200).json(newSchedule);
     } catch (error) {

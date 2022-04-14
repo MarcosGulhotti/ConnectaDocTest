@@ -84,15 +84,23 @@ export const createScheduleWithoutExistingPatient = async ({ user, doctorId, sch
   return newSchedule;
 };
 
-export const cancelSchedule = async (id: string) => {
+interface cancelSchedule {
+  id: string;
+  date: string;
+}
+
+export const cancelSchedule = async ({ id, date }: cancelSchedule) => {
   const userRepository = getCustomRepository(UserRepository);
   const scheduleRepository = getCustomRepository(SchedulesRepository);
 
   const user = await userRepository.findOne(id);
 
+  const newDate = new Date(date);
+
   const schedule = await scheduleRepository.findOne({
     where: {
       user: user.id,
+      schedule: newDate,
     },
   });
 
