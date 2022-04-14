@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { getCustomRepository } from "typeorm";
-import ErrorHTTP from "../error/ErrorHTTP";
 import UserRepository from "../repositories/User.repository";
 
 
@@ -13,7 +12,7 @@ export const isDoctorMiddleware = async (
   const user = await userRepository.findOne(req.userId);
 
   if (!user.isDoc) {
-    throw new ErrorHTTP("User is not a Doctor", 401);
+    throw new Error("User is not a Doctor");
   }
 
   next();
