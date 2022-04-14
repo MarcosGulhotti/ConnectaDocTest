@@ -41,6 +41,7 @@ export default class User {
 
   serialize() {
     return {
+      id: this.id,
       name: this.name,
       email: this.email,
       age: this.age,

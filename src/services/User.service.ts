@@ -84,10 +84,10 @@ export const createJWT = async ({ email, password }: ICreateJWT) => {
   return jwt;
 };
 
-export const listUserById = async (id: string) => {
+export const ListUserByEmail = async (email: string) => {
   const userRepository = getCustomRepository(UserRepository);
 
-  const user = await userRepository.findOne(id);
+  const user = await userRepository.findOne({ where: { email: email } });
 
   return user.serialize();
 };

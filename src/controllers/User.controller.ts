@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createUser, createJWT, listUserById } from "../services/User.service";
+import { createUser, createJWT, ListUserByEmail } from "../services/User.service";
 
 class UserController {
   async createUser(req: Request, res: Response) {
@@ -49,8 +49,9 @@ class UserController {
   }
 
   async listUser(req: Request, res: Response) {
+    const { email } = req.body
     try {
-      const user = await listUserById(req.userId);
+      const user = await ListUserByEmail(email);
 
       return res.status(200).json(user);
     } catch (error) {

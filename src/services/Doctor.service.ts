@@ -52,11 +52,9 @@ export const createScheduleWithExistingPatient = async ({
   const doctor = await userRepository.findOne(doctorId);
   const patient = await userRepository.findOne(userId);
 
-  const date = new Date();
+  const date = new Date(schedule);
 
-  if (schedule < date) {
-    throw new ErrorHTTP("Date is already in the past", 400);
-  }
+  console.log(date)
 
   if (!patient) {
     throw new Error("User not exists!");
@@ -66,7 +64,7 @@ export const createScheduleWithExistingPatient = async ({
     user: patient,
     doctor: doctor,
     status: "Agendado",
-    schedule,
+    schedule: date,
   });
 
   const savedSchedule = await scheduleRepository.save(newSchedule);
